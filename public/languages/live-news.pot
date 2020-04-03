@@ -1,0 +1,156 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: Live Blog\n"
+"POT-Creation-Date: 2019-09-05 17:04+0200\n"
+"PO-Revision-Date: 2019-09-05 17:04+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.3\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: Plugin.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
+"X-Poedit-SearchPathExcluded-2: node_modules\n"
+
+#: classes/CPTLiveBlog.php:44 classes/CPTLiveBlog.php:60
+msgid "Particle-Editor"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:69 classes/CPTLiveBlog.php:71
+#: classes/CPTLiveBlog.php:98
+msgid "Live-Blogs"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:70 classes/CPTLiveBlog.php:72
+msgid "Live-Blog"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:73
+msgid "Live-Blogarchiv"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:74
+msgid "Attributes"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:75
+msgid "Parent Item:"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:76
+msgid "All Live-Blogs"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:77
+msgid "Add new Live-Blog"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:78
+msgid "New"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:79
+msgid "New Live-Blog"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:80
+msgid "Edit Live-Blog"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:81
+msgid "Update Live-Blog"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:82
+msgid "View Live-Blog"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:83
+msgid "View Live-Blogs"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:84
+msgid "Search Live-Blog"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:85
+msgid "Nothing found"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:86
+msgid "Into trash"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:87
+msgid "Featured Image"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:88
+msgid "Set featured image"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:89
+msgid "Remove featured image"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:90
+msgid "Use as featured image"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:91
+msgid "Insert into item"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:92
+msgid "Uploaded to this item"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:93
+msgid "Items list"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:94
+msgid "Items list navigation"
+msgstr ""
+
+#: classes/CPTLiveBlog.php:95
+msgid "Filter items list"
+msgstr ""
+
+#: classes/Editor.php:69
+msgid "Edit Post"
+msgstr ""
+
+#: classes/Editor.php:72
+msgid "View Post"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Live Blog"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
+msgid "https://palasthotel.de"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Custom post type for news stream"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid ""
+"Palasthotel by Stephan <stephan.kroppenstedt@palasthotel.de> & Edward "
+"<edward.bock@palasthotel.de>"
+msgstr ""

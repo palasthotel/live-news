@@ -1,0 +1,152 @@
+// "butler watch --freeflight" im plugin  zum transpilieren
+$breakpoint__tablet: 900px;
+
+.live-news__interface {
+
+  @media (min-width: $breakpoint__tablet) {
+    display: flex;
+  }
+
+  margin-top: 10px;
+}
+
+.live-news-editor {
+  width: 100%;
+}
+
+.live-news__preview {
+  width: 100%;
+
+}
+
+.live-news__interface .spinner{
+  margin: 0;
+  float: none;
+  box-shadow: 0 7px 13px -5px rgba(0,0,0,0.1);
+  background-color: white;
+  padding: 6px;
+  border: 1px solid rgb(199, 199, 199);
+  border-radius: 20px;
+  background-position: center;
+
+  // active state
+  transition: all 330ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0;
+  transform: scale(0,0);
+  &.is-active{
+    opacity: 1;
+    transform: scale(1,1);
+  }
+}
+
+.live-news-input .spinner{
+  margin-left: 18px;
+  margin-bottom: 5px;
+}
+
+.live-news__preview--header{
+  position: relative;
+
+  .spinner{
+    position: absolute;
+    right: 50%;
+    margin-right: -10px;
+    top: -40px;
+    z-index: 1;
+  }
+
+}
+
+.live-news__stream {
+  width: 100%;
+
+  @media (min-width: $breakpoint__tablet) {
+    overflow-y: auto;
+    max-height: 100vh; //TODO fit dynamic to browser viewport
+  }
+
+}
+
+.live-news-stream__settings {
+  background-color: rgba(255, 255, 255, .9);
+  position: sticky;
+  top: 0;
+  padding: 15px 30px;
+  border: 1px solid #c7c7c7;
+  margin-bottom: -1px;
+
+  ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    display: inline-block;
+    margin-right: 10px;
+
+    &:link, &:visited {
+      color: black;
+      text-decoration: none;
+    }
+  }
+
+  .live-news-stream__settings--is-active {
+    border-bottom: 1px solid blue;
+  }
+}
+
+.live-news-editor__mover {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  cursor: pointer;
+}
+
+.live-news-editor__item {
+  display: flex;
+}
+
+.live-news-editor__up,
+.live-news-editor__down {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background-color: transparent;
+  transition: all 333ms ease-in-out;
+  color: rgb(99, 99, 99 );
+
+  &:hover, &:focus {
+    border: 1px solid rgba(99, 99, 99, .3 );
+  }
+}
+
+.live-news-editor__delete {
+  background-color: rgb(99, 99, 99 );
+  color: rgb(33, 33, 33 );
+  text-decoration: none;
+  font-size: 20px;
+  border-radius: 20px;
+  padding: 2px 7px;
+  line-height: 0px;
+  font-family: monospace;
+  transition: all 333ms ease-in-out;
+
+  &:hover, &:focus {
+    background-color: red;
+
+  }
+}
+.live-news-input__tags{
+  margin-bottom: 30px;
+  .live-news-input__tags--tag{
+    margin-right: 15px;
+  }
+}
+
+.live-news-particle__content {
+  word-break: break-word;
+}
+
+@import "particle";
+@import "input";
+@import "trumbowyg";

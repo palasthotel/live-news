@@ -1,0 +1,44 @@
+{
+	"tasks": [
+		{
+			"title":"Editor JS",
+			"type":"external",
+			"input":"n/a",
+			"output":"n/a",
+			"buildchain":[],
+			"cmdline":["/usr/bin/env","npm","run","watch-editor"],
+			"compile":["/usr/bin/env","npm","run","build-editor"]
+		},
+		{
+			"title":"Frontend JS",
+			"type":"external",
+			"input":"n/a",
+			"output":"n/a",
+			"buildchain":[],
+			"cmdline":["/usr/bin/env","npm","run","watch-frontend"],
+			"compile":["/usr/bin/env","npm","run","build-frontend"]
+		},
+		{
+			"title": "Editor SCSS",
+			"buildchain": [
+				{
+					"providecompass": true,
+					"args": [
+						"-t",
+						"compressed",
+						"-m"
+					],
+					"type": "builtin",
+					"compiler": "sassc",
+					"version": "3.3.0"
+				}
+			],
+			"input": "src\/scss\/editor.scss",
+			"type": "watch",
+			"output": "dist\/css\/editor.min.css",
+			"observe": {
+				"path": "src\/scss"
+			}
+		}
+	]
+}

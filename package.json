@@ -1,0 +1,22 @@
+{
+  "name": "live-news",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch-editor": "./node_modules/parcel-bundler/bin/cli.js watch src/js/editor.js -d public/dist/js --out-file editor.min.js",
+    "build-editor": "./node_modules/parcel-bundler/bin/cli.js build src/js/editor.js -d public/dist/js --out-file editor.min.js --no-source-maps",
+    "watch-frontend": "./node_modules/parcel-bundler/bin/cli.js watch src/js/frontend.js -d public/dist/js --out-file frontend.min.js",
+    "build-frontend": "./node_modules/parcel-bundler/bin/cli.js build src/js/frontend.js -d public/dist/js --out-file frontend.min.js --no-source-maps"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  },
+  "dependencies": {
+    "timeago.js": "^4.0.0-beta.2",
+    "trumbowyg": "^2.19.1"
+  }
+}
