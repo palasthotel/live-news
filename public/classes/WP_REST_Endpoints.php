@@ -3,8 +3,6 @@
 
 namespace Palasthotel\WordPress\LiveNews;
 
-
-use OctaviusRocks\Data;
 use Palasthotel\WordPress\LiveNews\Mapper\DataMapper;
 use Palasthotel\WordPress\LiveNews\Model\GetParticlesArguments;
 use Palasthotel\WordPress\LiveNews\Model\Particle;
@@ -30,9 +28,15 @@ class WP_REST_Endpoints {
 
 	const ARG_OUTPUT = "output";
 
-	const ARG_UNIX_TIMESTAMP = "unix_timestamp";
+	const ARG_UNIX_TIMESTAMP_AFTER = "unix_timestamp_after";
+
+	const ARG_UNIX_TIMESTAMP_BEFORE = "unix_timestamp_before";
+
+	const ARG_NUMBER_OF_PARTICLES = "number_of_particles";
 
 	const ARG_TAGS_ARR = "tags";
+
+	const ARG_ORDER_DIRECTION = "order_direction";
 
 	const ARG_AUTHOR_ID = "author_id";
 
@@ -124,15 +128,30 @@ class WP_REST_Endpoints {
 				'methods'  => \WP_REST_Server::READABLE,
 				'callback' => array( $this, 'route_get_particles' ),
 				'args'     => array(
-					self::ARG_POST_ID        => $arg_int_required,
-					self::ARG_UNIX_TIMESTAMP => $arg_int_optional,
-					self::ARG_TAGS_ARR       => $arg_string_array_optional,
-					self::ARG_OUTPUT         => array(
+					self::ARG_POST_ID              => $arg_int_required,
+					self::ARG_UNIX_TIMESTAMP_AFTER => $arg_int_optional,
+					self::ARG_UNIX_TIMESTAMP_BEFORE => $arg_int_optional,
+					self::ARG_NUMBER_OF_PARTICLES => $arg_int_optional,
+					self::ARG_TAGS_ARR             => $arg_string_array_optional,
+					self::ARG_OUTPUT               => array(
 						'validate_callback' => function ( $value, $request, $param ) {
 							return is_string( $value ) || $value == NULL;
 						},
 						'sanitize_callback' => function ( $value ) {
 							return ( $value != NULL && $value == "html" ) ? "html" : "json";
+						},
+					),
+					self::ARG_ORDER_DIRECTION   => array(
+						'validate_callback' => function ( $value, $request, $param ) {
+							return is_string( $value ) || $value == NULL;
+						},
+						'sanitize_callback' => function ( $value ) {
+							if(
+								$value !== GetParticlesArguments::DIRECTION_ASC
+								&&
+								$value !== GetParticlesArguments::DIRECTION_DESC
+							) return null;
+							return $value;
 						},
 					),
 				),
@@ -207,32 +226,54 @@ class WP_REST_Endpoints {
 	public function route_get_particles( $request ) {
 
 		$post_id   = $request->get_param( self::ARG_POST_ID );
-		$timestamp = $request->get_param( self::ARG_UNIX_TIMESTAMP );
+		$after = $request->get_param( self::ARG_UNIX_TIMESTAMP_AFTER );
+		$before = $request->get_param( self::ARG_UNIX_TIMESTAMP_BEFORE );
+		$numberOfParticles = $request->get_param( self::ARG_NUMBER_OF_PARTICLES );
 		$tags      = $request->get_param( self::ARG_TAGS_ARR );
+		$orderDirection = $request->get_param(self::ARG_ORDER_DIRECTION);
 		$output    = $request->get_param( self::ARG_OUTPUT );
 
-		$arguments = GetParticlesArguments::build( $post_id );
+		$query = new Query($post_id);
 
-		if ( $timestamp ) {
-			$arguments->setModifiedSince( $timestamp );
+		if ( $after ) {
+			$query->arguments()->setModifiedSince( $after );
+		}
+
+		if ( $before ) {
+			$query->arguments()->setModifiedBefore( $before );
+		}
+
+		if( $numberOfParticles ) {
+			$query->arguments()->setNumberOfParticles($numberOfParticles);
 		}
 
 		if ( $tags ) {
-			$arguments->setWithTags( $tags );
+			$query->arguments()->setWithTags( $tags );
+		}
+
+		switch ($orderDirection){
+			case GetParticlesArguments::DIRECTION_DESC:
+				$query->arguments()->setOrderDesc();
+				break;
+			case GetParticlesArguments::DIRECTION_ASC:
+				$query->arguments()->setOrderDesc();
+				break;
 		}
 
 		// save current time before db request
 		// to report request time to user for next request
 		$time      = time();
-		$particles = $this->plugin->database->getParticles( $arguments );
+		$result = $query->get();
+
 
 		return array(
 			"output"            => $output,
 			"request_timestamp" => floor( $time / $this->getRoundRequestTimestamp() ) * $this->getRoundRequestTimestamp(),
 			"particles"         => ( $output == "html" ) ?
-				$this->plugin->dataMapper->particlesToHtmlList( $particles )
+				$this->plugin->dataMapper->particlesToHtmlList( $result->particles )
 				:
-				DataMapper::particlesToJson( $particles ),
+				DataMapper::particlesToJson( $result->particles ),
+			"numberOfParticles" => $result->numberOfParticles,
 		);
 	}
 

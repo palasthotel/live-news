@@ -33,7 +33,7 @@ class CustomPostType {
 	 */
 	function the_post( $post ) {
 		if ( Plugin::CPT_LIVE_NEWS == $post->post_type ) {
-			$post->particles = $this->plugin->database->getParticles( GetParticlesArguments::build( $post->ID ) );
+			$post->particles = new Query($post->ID);
 		}
 	}
 

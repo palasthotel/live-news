@@ -97,6 +97,8 @@ class Plugin {
 
 	const SELECTOR_LIST_ID = "live-news-list";
 
+	const SELECTOR_LOAD_MORE_ID = "live-news-load-more";
+
 	/**
 	 * Plugin constructor.
 	 */

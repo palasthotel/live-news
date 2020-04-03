@@ -12,16 +12,31 @@ const esc = encodeURIComponent;
  */
 const getSanitizeParams = (
 	{
-		unix_timestamp = null,
+		unix_timestamp_after = null,
+		unix_timestamp_before = null,
 		tags = null,
+		number_of_particles = null,
+		order_direction = null,
 		output = "json",
 	} = {}
 )=>{
 
 	const params = {};
 
-	if(unix_timestamp !== null){
-		params.unix_timestamp = parseInt(unix_timestamp);
+	if(unix_timestamp_after !== null){
+		params.unix_timestamp_after = parseInt(unix_timestamp_after);
+	}
+
+	if(unix_timestamp_before !== null){
+		params.unix_timestamp_before = parseInt(unix_timestamp_before);
+	}
+
+	if(number_of_particles !== null){
+		params.number_of_particles = parseInt(number_of_particles);
+	}
+
+	if(order_direction !== null) {
+		params.order_direction = order_direction;
 	}
 
 	if(tags !== null){
@@ -86,6 +101,7 @@ export const publicApi = (config) => {
 
 	return {
 		fetchParticles: (params)=>{
+			console.log(params);
 			return fetch(routes.getParticles+"?"+getSanitizedParamsString(params),{
 				method: 'GET',
 				})
@@ -94,7 +110,8 @@ export const publicApi = (config) => {
 		},
 		fetchParticlesUpdate: (params)=>{
 			const p = {
-				unix_timestamp: last_request_timestamp,
+				unix_timestamp_after: last_request_timestamp,
+				order_direction: "DESC",
 				...params,
 			};
 			return fetch(routes.getParticles+"?"+getSanitizedParamsString(p))

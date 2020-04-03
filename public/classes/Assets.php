@@ -137,6 +137,7 @@ class Assets {
 				"selectors"              => array(
 					"rootId" => Plugin::SELECTOR_ROOT_ID,
 					"listId" => Plugin::SELECTOR_LIST_ID,
+					"loadMoreId" => Plugin::SELECTOR_LOAD_MORE_ID,
 				),
 				"postId"                 => $postId,
 				"routes"                 => array(

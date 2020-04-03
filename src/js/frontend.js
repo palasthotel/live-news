@@ -34,8 +34,10 @@ timeagoRegister('de_DE', localeFunc);
 
     let {isFetchUpdatesActive} = config;
 
+    const $body = $("body");
     const $root = $("#" + selectors.rootId);
     const $list = $("#" + selectors.listId);
+    const $loadMore = $("#" + selectors.loadMoreId);
 
     //------------------------------------------------------------------------
     // if important elements are missing in frontend, we cannot help
@@ -67,16 +69,22 @@ timeagoRegister('de_DE', localeFunc);
         clearTimeout(fetchParticlesTimeout);
         if(!isFetchUpdatesActive) return;
 
-        api.fetchParticlesUpdate({output: "html"}).then(function (particles) {
+        $body.addClass("live-news-status__is-fetching-update");
 
-            // TODO: refactore
-            $(".live-news-status__indicator").addClass("live-news-status__indicator--update");
+        api.fetchParticlesUpdate({
+            output: "html",
+        }).then(function (particles) {
+            console.log(particles);
+
+            $body.removeClass("live-news-status__is-fetching-update");
+
+            $body.addClass("live-news-status__fetched-update");
             setTimeout(function () {
-                $(".live-news-status__indicator").removeClass("live-news-status__indicator--update");
+                $body.removeClass("live-news-status__fetched-update");
             }, 500);
 
             // TODO: watch for problems
-            const success = updateView(particles);
+            const success = updateView(particles.reverse(), ($particle)=> $list.prepend($particle));
             if (success) {
                 fetchParticlesTimeout = setTimeout(fetchParticlesUpdate, 5000);
             } else {
@@ -87,10 +95,37 @@ timeagoRegister('de_DE', localeFunc);
     fetchParticlesUpdate();
 
     //------------------------------------------------------------------------
+    // load particles of the past
+    //------------------------------------------------------------------------
+    if($loadMore.length){
+        let isLoadingMore = false;
+        $loadMore.on("click", function(e){
+            e.preventDefault();
+            if(isLoadingMore) return;
+            isLoadingMore = true;
+
+            $body.addClass("live-news-status__is-fetching-more");
+
+            api.fetchParticles({
+                unix_timestamp_before: $list.children().last().data("particle-modified"),
+                number_of_particles: 5,
+                output: "html",
+            }).then((result)=>{
+                isLoadingMore = false;
+                $body.removeClass("live-news-status__is-fetching-more");
+                updateView(result, ($particle)=> $list.append($particle));
+            })
+        })
+    }
+
+    //------------------------------------------------------------------------
     // update view with particle modifications
     //------------------------------------------------------------------------
-    function updateView(particles) {
-        for (let p of particles.reverse()) {
+    function updateView(particles, addToPosition) {
+
+        if(typeof particles !== typeof []) return false;
+
+        for (let p of particles) {
             const {id, html} = p;
             const $particle = $list.find(`[data-particle-id=${id}]`);
             const $newParticle = $(html);
@@ -107,7 +142,8 @@ timeagoRegister('de_DE', localeFunc);
             } else {
                 // INSERT
                 $newParticle.data("particle", p);
-                $list.prepend($newParticle);
+                addToPosition($newParticle);
+
                 triggerAddParticle($newParticle);
             }
 
@@ -122,7 +158,7 @@ timeagoRegister('de_DE', localeFunc);
     // update view with particle modifications
     //------------------------------------------------------------------------
     function timeagoize($dates) {
-        timeagoRender($dates, 'de_DE');
+        timeagoRender($dates.get(), 'de_DE');
     }
 
     // initial timeago for php rendered elements

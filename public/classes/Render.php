@@ -79,7 +79,7 @@ class Render {
 			}
 		}
 
-		if(!is_array($post->particles)){
+		if(!($post->particles instanceof Query)){
 			error_log("$post->ID: particles is not an array. Cannot render...");
 			return;
 		}

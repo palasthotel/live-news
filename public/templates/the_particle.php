@@ -4,7 +4,11 @@
  * @var \Palasthotel\WordPress\LiveNews\Model\Particle $particle
  */
 ?>
-<li><?php
+<li
+	data-particle-created="<?php echo $particle->created->format( "U" ); ?>"
+	data-particle-modified="<?php echo $particle->modified->format( "U" ); ?>"
+	data-particle-id="<?php echo $particle->id; ?>"
+><?php
 	$author = get_userdata($particle->author_id);
 	$authorName = "Unknown";
 	if($author){

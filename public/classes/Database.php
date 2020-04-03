@@ -4,8 +4,10 @@
 namespace Palasthotel\WordPress\LiveNews;
 
 
+use Palasthotel\WordPress\LiveNews\Model\GetParticlesArguments;
 use Palasthotel\WordPress\LiveNews\Model\Particle;
 use Palasthotel\WordPress\LiveNews\Model\ParticleContent;
+use Palasthotel\WordPress\LiveNews\Model\QueryResult;
 
 /**
  * @property \wpdb wpdb
@@ -46,7 +48,7 @@ class Database {
 	/**
 	 * @param Model\GetParticlesArguments $arguments
 	 *
-	 * @return Particle[]
+	 * @return QueryResult
 	 */
 	public function getParticles( $arguments ) {
 
@@ -59,21 +61,34 @@ class Database {
 		$whereSinceModified = "";
 		if ( is_int( $arguments->modifiedSinceUnixTimestamp ) ) {
 			$whereIsNotDeleted = "";
-			$whereSinceModified = "AND modified_timestamp >= $arguments->modifiedSinceUnixTimestamp";
+			$whereSinceModified = "AND modified_timestamp > $arguments->modifiedSinceUnixTimestamp";
+		}
+
+		$whereBeforeModified = "";
+		if ( is_int( $arguments->modifiedBeforeUnixTimestamp ) ) {
+			$whereIsNotDeleted = "";
+			$whereBeforeModified = "AND modified_timestamp < $arguments->modifiedBeforeUnixTimestamp";
+		}
+
+		$orderBy = "created_timestamp DESC, ";
+		if($arguments->getOrderDirection() === GetParticlesArguments::DIRECTION_ASC){
+			$orderBy = "created_timestamp ASC, ";
 		}
 
 		$results = $this->wpdb->get_results( $this->wpdb->prepare(
 			"SELECT 
             $this->tableParticles.id as particle_id, $this->tableContents.id as content_id, 
-            post_id, author_id, created_timestamp, modified_timestamp, is_deleted, 
+            post_id, author_id, 
+            created_timestamp, modified_timestamp, 
+            is_deleted, 
             content, type, position,
             tag            
 		FROM $this->tableParticles
         LEFT JOIN $this->tableContents ON ($this->tableParticles.id = $this->tableContents.particle_id) 
 		LEFT JOIN $this->tableParticlesToTags ON ($this->tableParticles.id = $this->tableParticlesToTags.particle_id)
         LEFT JOIN $this->tableTags ON ($this->tableParticlesToTags.tag_id = $this->tableTags.id )
-		WHERE post_id = %d $whereTags $whereSinceModified $whereIsNotDeleted
-		ORDER BY created_timestamp DESC, particle_id ASC, position ASC
+		WHERE post_id = %d $whereTags $whereSinceModified $whereBeforeModified $whereIsNotDeleted
+		ORDER BY $orderBy particle_id ASC, position ASC
     ", $arguments->post_id ) );
 
 		$particle_id = NULL;
@@ -84,6 +99,13 @@ class Database {
 
 			// its a new particle? we parse it!
 			if ( $particle_id != $item->particle_id ) {
+
+				if(
+					is_int($arguments->numberOfParticles)
+					&&
+					count($particles) >= $arguments->numberOfParticles
+				) break;
+
 				$particle_id         = intval( $item->particle_id );
 				$particle            = new Particle();
 				$particle->id        = $particle_id;
@@ -121,7 +143,11 @@ class Database {
 			$particle->addContent( $particleContent, false );
 		}
 
-		return $particles;
+		$uniqueParticleIds = array_unique(array_map(function($item){
+			return $item->particle_id;
+		},$results));
+
+		return new QueryResult($particles, count($uniqueParticleIds));
 
 	}
 
