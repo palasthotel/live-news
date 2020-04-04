@@ -38,6 +38,7 @@ class DataMapper {
 			return array();
 		}
 
+		$this->plugin->render->remove_content_filter();
 		$list = array();
 		$query = new WP_Query(["p"=>$post_id, "post_type" => Plugin::CPT_LIVE_NEWS]);
 		if($query->have_posts()){
@@ -60,6 +61,7 @@ class DataMapper {
 		}
 
 		wp_reset_postdata();
+		$this->plugin->render->add_content_filter();
 
 		return $list;
 	}

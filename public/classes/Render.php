@@ -23,9 +23,23 @@ class Render {
 		$this->plugin = $plugin;
 		$this->sub_dirs = null;
 		add_action('init', function(){
-			if($this->shouldRenderToTheContent())
-				add_filter('the_content', array($this, 'the_content'), $this->getTheContentFilterPriority());
+			if($this->shouldRenderToTheContent()) $this->add_content_filter();
+
 		});
+	}
+
+	/**
+	 * add the content filter
+	 */
+	function add_content_filter(){
+		add_filter('the_content', array($this, 'the_content'), $this->getTheContentFilterPriority());
+	}
+
+	/**
+	 * remove the content filter
+	 */
+	function remove_content_filter(){
+		remove_filter('the_content', array($this, 'the_content'), $this->getTheContentFilterPriority());
 	}
 
 	/**
