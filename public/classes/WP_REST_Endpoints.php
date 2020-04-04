@@ -265,14 +265,20 @@ class WP_REST_Endpoints {
 		$time      = time();
 		$result = $query->get();
 
+		if( "html" == $output){
+			$particles = $this->plugin->dataMapper->particlesToHtmlList( $result->particles );
+		} else {
+			$particles = DataMapper::particlesToJson( $result->particles );
+		}
+
+		$request_timestamp = floor(
+			$time / $this->getRoundRequestTimestamp()
+         ) * $this->getRoundRequestTimestamp();
 
 		return array(
 			"output"            => $output,
-			"request_timestamp" => floor( $time / $this->getRoundRequestTimestamp() ) * $this->getRoundRequestTimestamp(),
-			"particles"         => ( $output == "html" ) ?
-				$this->plugin->dataMapper->particlesToHtmlList( $result->particles )
-				:
-				DataMapper::particlesToJson( $result->particles ),
+			"request_timestamp" => $request_timestamp,
+			"particles"         => $particles,
 			"numberOfParticles" => $result->numberOfParticles,
 		);
 	}
