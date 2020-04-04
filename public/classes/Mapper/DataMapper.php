@@ -6,6 +6,7 @@ namespace Palasthotel\WordPress\LiveNews\Mapper;
 use Palasthotel\WordPress\LiveNews\Plugin;
 use Palasthotel\WordPress\LiveNews\Model\Particle;
 use Palasthotel\WordPress\LiveNews\Model\ParticleContent;
+use WP_Query;
 
 /**
  * @property Plugin plugin
@@ -37,22 +38,27 @@ class DataMapper {
 			return array();
 		}
 
-		setup_postdata($post_id);
-
 		$list = array();
-		foreach ($particles as $particle){
-			ob_start();
-			$this->plugin->render->renderParticle($particle);
-			$list[] = array(
-				"id" => $particle->id,
-				"created" => $particle->created->getTimestamp(),
-				"modified" => $particle->modified->getTimestamp(),
-				"is_deleted" => $particle->is_deleted,
-				"tags" => $particle->getTags(),
-				"html" => ob_get_contents(),
-			);
-			ob_end_clean();
+		$query = new WP_Query(["p"=>$post_id, "post_type" => Plugin::CPT_LIVE_NEWS]);
+		if($query->have_posts()){
+			$query->the_post();
+
+			foreach ($particles as $particle){
+				ob_start();
+				$this->plugin->render->renderParticle($particle);
+				$list[] = array(
+					"id" => $particle->id,
+					"created" => $particle->created->getTimestamp(),
+					"modified" => $particle->modified->getTimestamp(),
+					"is_deleted" => $particle->is_deleted,
+					"tags" => $particle->getTags(),
+					"html" => ob_get_contents(),
+				);
+				ob_end_clean();
+			}
+
 		}
+
 		wp_reset_postdata();
 
 		return $list;
