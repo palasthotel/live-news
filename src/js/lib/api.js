@@ -93,20 +93,28 @@ export const publicApi = (config) => {
 	 * @return {*}
 	 */
 	const resolveParticles = (res)=>{
+		return res.json().then(json => json.particles );
+	};
+
+	/**
+	 * resolve particles response and save request timestamp
+	 * @param res
+	 * @return {*}
+	 */
+	const resolveUpdateParticles = (res)=>{
 		return res.json().then(json => {
 			last_request_timestamp = json.request_timestamp;
-			return json.particles;
+			return json.particles
 		});
 	};
 
 	return {
 		fetchParticles: (params)=>{
-			console.log(params);
 			return fetch(routes.getParticles+"?"+getSanitizedParamsString(params),{
 				method: 'GET',
-				})
-				.then(resolveParticles)
-				.catch(console.error);
+			})
+			.then(resolveParticles)
+			.catch(console.error);
 		},
 		fetchParticlesUpdate: (params)=>{
 			const p = {
@@ -115,7 +123,7 @@ export const publicApi = (config) => {
 				...params,
 			};
 			return fetch(routes.getParticles+"?"+getSanitizedParamsString(p))
-				.then(resolveParticles)
+				.then(resolveUpdateParticles)
 				.catch(console.error);
 		},
 		resetLastRequestTimestamp: ()=>{
