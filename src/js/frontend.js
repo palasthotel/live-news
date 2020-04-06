@@ -70,7 +70,7 @@ timeagoRegister('de_DE', localeFunc);
     const isNotInUpdate = (updateIds) => {
         return (particle) => !updateIds.includes(particle.id);
     };
-    const sortByModifiedDate = (a,b) => a.modified_date - b.modified_date;
+    const sortByCreatedDate = (a,b) => b.created - a.created;
 
     const merge = (particles) => {
         const updateParticles = particles.filter(p => !p.is_deleted);
@@ -79,11 +79,10 @@ timeagoRegister('de_DE', localeFunc);
         particlePool = particlePool
             .filter(isNotInDeleted(deletedIds))
             .filter(isNotInUpdate(updateIds));
-
         for(let particle of updateParticles){
             particlePool.push(particle);
         }
-        particlePool.sort(sortByModifiedDate);
+        particlePool.sort(sortByCreatedDate);
     };
 
     const getParticles = () => [...particlePool];
@@ -166,9 +165,12 @@ timeagoRegister('de_DE', localeFunc);
 
         const updateTimestamp = new Date().getTime();
 
-        if(typeof particles !== typeof []) return false;
+        if(typeof particles !== typeof [] || particles.length < 1) return false;
 
-        for (let p of particles) {
+        let position = particles.length;
+        for (let p of particles.reverse()) {
+
+            position--;
 
             const {id, html} = p;
             const $particle = $list.find(`[data-particle-id=${id}]`);
@@ -179,22 +181,35 @@ timeagoRegister('de_DE', localeFunc);
                 continue;
             }
 
-            const $newParticle = $(html);
+            let $newParticle = $(html);
             $newParticle.attr("data-update-timestamp", updateTimestamp);
-            $newParticle.attr("data-particle-modified", p.modified_date);
+            $newParticle.attr("data-particle-modified", p.modified);
 
+            // add or modify content
             if($particle.length) {
                 if($particle.attr("data-particle-modified") !== $newParticle.attr("data-particle-modified")){
                     // UPDATE
                     $particle.replaceWith($newParticle);
                 } else {
                     $particle.attr("data-update-timestamp", updateTimestamp);
+                    $newParticle = $particle;
                 }
             } else {
                 // INSERT
                 $list.append($newParticle);
 
                 triggerAddParticle($newParticle);
+            }
+
+            // sync order
+            const elementPosition = $newParticle.index();
+            if(elementPosition !== position) {
+                if(position === 0){
+                    $list.prepend($newParticle);
+                } else {
+                    $newParticle.insertAfter($list.children().get(position-1));
+                }
+
             }
 
             // start timeago
