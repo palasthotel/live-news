@@ -184,13 +184,10 @@ timeagoRegister('de_DE', localeFunc);
             $newParticle.attr("data-particle-modified", p.modified_date);
 
             if($particle.length) {
-                console.log("found particle", $particle);
                 if($particle.attr("data-particle-modified") !== $newParticle.attr("data-particle-modified")){
                     // UPDATE
-                    console.log("update with newer version");
                     $particle.replaceWith($newParticle);
                 } else {
-                    console.log("add attr to timestamp");
                     $particle.attr("data-update-timestamp", updateTimestamp);
                 }
             } else {
@@ -206,7 +203,6 @@ timeagoRegister('de_DE', localeFunc);
 
         $list.children().each((index, el)=>{
             const $el = $(el);
-            console.log($el, $el.attr("data-update-timestamp"), updateTimestamp+"",  $el.attr("data-update-timestamp") !== updateTimestamp+"");
             if($el.attr("data-update-timestamp") !== updateTimestamp+""){
                 $el.hide();
             } else {
