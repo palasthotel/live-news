@@ -87,6 +87,7 @@ timeagoRegister('de_DE', localeFunc);
 
     const getParticles = () => [...particlePool];
 
+    const show = (num) => numberOfVisibleParticles = num;
     const showMore = (increase = 5)=> numberOfVisibleParticles += increase;
 
     const getVisibleParticles = (particles = getParticles(), numberOf = numberOfVisibleParticles) => {
@@ -216,14 +217,22 @@ timeagoRegister('de_DE', localeFunc);
             timeagoize($newParticle.find(".timeago"));
         }
 
+        let visibleCount = 0;
         $list.children().each((index, el)=>{
             const $el = $(el);
             if($el.attr("data-update-timestamp") !== updateTimestamp+""){
                 $el.hide();
             } else {
                 $el.show();
+                visibleCount++;
             }
         });
+
+        if(visibleCount >= particlePool.length ){
+            $body.addClass("live-news-status__all-visible");
+        } else {
+            $body.removeClass("live-news-status__all-visible");
+        }
 
         return true;
     }
@@ -250,6 +259,7 @@ timeagoRegister('de_DE', localeFunc);
 
     LiveNews.numberOfVisibleParticles = ()=> numberOfVisibleParticles;
     LiveNews.showMore = showMore;
+    LiveNews.show = show;
     LiveNews.getParticles = getParticles;
 
     LiveNews.hooks = hooks;
