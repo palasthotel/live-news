@@ -52,6 +52,7 @@ export const particleStreamPreview = ($, contentTypeProvider, onEdit, onCancelEd
 			const p = getPreviewStreamParticleView(particle_id);
 			if(p) p.setLoading(isLoading);
 		},
+		removeParticleById,
 		update: (particles) => {
 			for(let p of particles.reverse()){
 				const inStream = isInPreviewStream(p.id);
