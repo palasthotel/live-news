@@ -44,6 +44,7 @@ timeagoRegister('de_DE', localeFunc);
     const hooks = {
         filterVisibleParticles: (particles) => particles,
         filterShowMoreIncrement: (increment) => increment,
+        filterHideShowMoreButton: (hide) => hide,
     };
 
     //------------------------------------------------------------------------
@@ -228,7 +229,9 @@ timeagoRegister('de_DE', localeFunc);
             }
         });
 
-        if(visibleCount >= particlePool.length ){
+        console.log(visibleCount, numberOfVisibleParticles)
+
+        if( hooks.filterHideShowMoreButton(visibleCount >= particlePool.length) ){
             $body.addClass("live-news-status__all-visible");
         } else {
             $body.removeClass("live-news-status__all-visible");
