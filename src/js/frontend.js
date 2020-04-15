@@ -169,10 +169,10 @@ timeagoRegister('de_DE', localeFunc);
 
         if(typeof particles !== typeof [] || particles.length < 1) return false;
 
-        let position = particles.length;
-        for (let p of particles.reverse()) {
+        let position = -1;
+        for (let p of particles) {
 
-            position--;
+            position++;
 
             const {id, html} = p;
             const $particle = $list.find(`[data-particle-id=${id}]`);
@@ -180,6 +180,7 @@ timeagoRegister('de_DE', localeFunc);
             if(p.is_deleted){
                 // DELETE
                 $particle.remove();
+                position--;
                 continue;
             }
 
@@ -228,8 +229,6 @@ timeagoRegister('de_DE', localeFunc);
                 visibleCount++;
             }
         });
-
-        console.log(visibleCount, numberOfVisibleParticles)
 
         if( hooks.filterHideShowMoreButton(visibleCount >= particlePool.length) ){
             $body.addClass("live-news-status__all-visible");
