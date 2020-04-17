@@ -40,7 +40,7 @@ class Database {
 	public function getParticleAuthors($post_id){
 		return $this->wpdb->get_col(
 			$this->wpdb->prepare(
-				"SELECT DISTINCT author_id FROM {$this->tableParticles} WHERE post_id = %d", $post_id
+				"SELECT DISTINCT author_id FROM {$this->tableParticles} WHERE post_id = %d AND is_deleted = 0", $post_id
 			)
 		);
 	}
