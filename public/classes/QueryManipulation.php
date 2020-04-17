@@ -78,7 +78,7 @@ class QueryManipulation {
 		){
 			global $wpdb;
 			$table = $this->plugin->database->tableParticles;
-			$join .= "LEFT JOIN $table ON ({$wpdb->posts}.ID = $table.post_id)";
+			$join .= "LEFT JOIN $table ON ({$wpdb->posts}.ID = $table.post_id AND $table.is_deleted = 0)";
 			$this->isGroupingNeeded = true;
 		} else {
 			$this->isGroupingNeeded = false;
@@ -144,7 +144,7 @@ class QueryManipulation {
 		global $wpdb;
 		$table = $this->plugin->database->tableParticles;
 
-		$select = "SELECT count(*) FROM $wpdb->posts LEFT JOIN $table ON $table.post_id = {$wpdb->posts}.ID ";
+		$select = "SELECT count(*) FROM $wpdb->posts LEFT JOIN $table ON ($table.post_id = {$wpdb->posts}.ID and $table.is_deleted = 0) ";
 		$where = "WHERE author_id = $userid";
 		if($post_type != "any") $where.= " AND post_type = '$post_type'";
 
@@ -163,7 +163,7 @@ class QueryManipulation {
 		) {
 			$start_string = "AND $wpdb->users.ID IN ( ";
 			
-			$inject_where_additional_authors = " $wpdb->users.ID IN ( SELECT author_id FROM ".$this->plugin->database->tableParticles." ) ";
+			$inject_where_additional_authors = " $wpdb->users.ID IN ( SELECT author_id FROM ".$this->plugin->database->tableParticles." WHERE is_deleted = 0 ) ";
 
 			$new_start    = "AND ( $inject_where_additional_authors OR $wpdb->users.ID IN ( ";
 			$end_string   = ") )";
