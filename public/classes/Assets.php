@@ -38,7 +38,7 @@ class Assets {
 		wp_register_script(
 			Plugin::HANDLE_EDITOR_JS,
 			$this->plugin->url . "/dist/js/editor.min.js",
-			array(),
+			array('wp-api'),
 			filemtime( $this->plugin->path . "/dist/js/editor.min.js" ),
 			true
 		);
@@ -125,7 +125,7 @@ class Assets {
 		wp_enqueue_script(
 			Plugin::HANDLE_FRONTEND_JS,
 			$this->plugin->url . "/dist/js/frontend.min.js",
-			array(),
+			array( "jquery", "wp-embed"),
 			filemtime( $this->plugin->path . "/dist/js/frontend.min.js" ),
 			true
 		);

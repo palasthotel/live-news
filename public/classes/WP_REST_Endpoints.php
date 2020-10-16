@@ -127,6 +127,9 @@ class WP_REST_Endpoints {
 			array(
 				'methods'  => \WP_REST_Server::READABLE,
 				'callback' => array( $this, 'route_get_particles' ),
+				'permission_callback' => function () {
+					return true;
+				},
 				'args'     => array(
 					self::ARG_POST_ID              => $arg_int_required,
 					self::ARG_UNIX_TIMESTAMP_AFTER => $arg_int_optional,
@@ -426,8 +429,8 @@ class WP_REST_Endpoints {
 		}
 
 		$attachment                 = $prepared_post = new \stdClass();
-		$attachment->post_title = $request['title'];
-		$attachment->post_excerpt = $request['caption'];
+		$attachment->post_title = isset($request['title']) ? $request['title']: "";
+		$attachment->post_excerpt = isset($request['caption']) ? $request['caption']: "";
 		$attachment->post_parent = (int) $post_id;
 		$attachment->post_mime_type = $type;
 		$attachment->guid           = $url;
@@ -437,7 +440,7 @@ class WP_REST_Endpoints {
 		}
 
 		// $post_parent is inherited from $attachment['post_parent'].
-		$id = wp_insert_attachment( wp_slash( (array) $attachment ), $file, 0, true );
+		$id = wp_insert_attachment( wp_slash( (array) $attachment ), $file, $post_id, true );
 
 		if ( is_wp_error( $id ) ) {
 			if ( 'db_update_error' === $id->get_error_code() ) {
