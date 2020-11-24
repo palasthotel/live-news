@@ -37,16 +37,16 @@ class Assets {
 	public function admin_init() {
 		wp_register_script(
 			Plugin::HANDLE_EDITOR_JS,
-			$this->plugin->url . "/dist/js/editor.min.js",
+			$this->plugin->url . "/dist/editor.js",
 			array('wp-api'),
-			filemtime( $this->plugin->path . "/dist/js/editor.min.js" ),
+			filemtime( $this->plugin->path . "/dist/editor.js" ),
 			true
 		);
 		wp_register_style(
 			Plugin::HANDLE_EDITOR_STYLE,
-			$this->plugin->url . "/dist/css/editor.min.css",
+			$this->plugin->url . "/dist/editor.css",
 			array(),
-			filemtime( $this->plugin->path . "/dist/css/editor.min.css" )
+			filemtime( $this->plugin->path . "/dist/editor.css" )
 		);
 	}
 
@@ -62,7 +62,7 @@ class Assets {
 		$editor_config = array(
 			"removeformatPasted" => true,
 			"tagsToRemove"       => [ 'img', 'script', 'pre' ],
-			"svgPath"            => '../wp-content/plugins/live-news/dist/assets/svg/icons.svg',
+			"svgPath"            => $this->plugin->url.'/assets/icons.svg',
 			"btns"               => array(
 				array( 'viewHTML' ),
 				array( 'undo', 'redo' ),
@@ -124,9 +124,9 @@ class Assets {
 	public function enqueueFrontend( $postId ) {
 		wp_enqueue_script(
 			Plugin::HANDLE_FRONTEND_JS,
-			$this->plugin->url . "/dist/js/frontend.min.js",
+			$this->plugin->url . "/dist/frontend.js",
 			array( "jquery", "wp-embed"),
-			filemtime( $this->plugin->path . "/dist/js/frontend.min.js" ),
+			filemtime( $this->plugin->path . "/dist/frontend.js" ),
 			true
 		);
 		wp_localize_script(
