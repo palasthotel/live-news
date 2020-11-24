@@ -29,6 +29,9 @@ class ComposerStaticInit7f5ea8420a0b9588b0d68141d05a7488
         'Palasthotel\\WordPress\\LiveNews\\Model\\GetParticlesArguments' => __DIR__ . '/../..' . '/classes/Model/GetParticlesArguments.php',
         'Palasthotel\\WordPress\\LiveNews\\Model\\Particle' => __DIR__ . '/../..' . '/classes/Model/Particle.php',
         'Palasthotel\\WordPress\\LiveNews\\Model\\ParticleContent' => __DIR__ . '/../..' . '/classes/Model/ParticleContent.php',
+        'Palasthotel\\WordPress\\LiveNews\\Model\\QueryResult' => __DIR__ . '/../..' . '/classes/Model/QueryResult.php',
+        'Palasthotel\\WordPress\\LiveNews\\Query' => __DIR__ . '/../..' . '/classes/Query.php',
+        'Palasthotel\\WordPress\\LiveNews\\QueryManipulation' => __DIR__ . '/../..' . '/classes/QueryManipulation.php',
         'Palasthotel\\WordPress\\LiveNews\\Render' => __DIR__ . '/../..' . '/classes/Render.php',
         'Palasthotel\\WordPress\\LiveNews\\WP_REST_Endpoints' => __DIR__ . '/../..' . '/classes/WP_REST_Endpoints.php',
     );

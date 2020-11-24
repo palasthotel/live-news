@@ -14,6 +14,9 @@ return array(
     'Palasthotel\\WordPress\\LiveNews\\Model\\GetParticlesArguments' => $baseDir . '/classes/Model/GetParticlesArguments.php',
     'Palasthotel\\WordPress\\LiveNews\\Model\\Particle' => $baseDir . '/classes/Model/Particle.php',
     'Palasthotel\\WordPress\\LiveNews\\Model\\ParticleContent' => $baseDir . '/classes/Model/ParticleContent.php',
+    'Palasthotel\\WordPress\\LiveNews\\Model\\QueryResult' => $baseDir . '/classes/Model/QueryResult.php',
+    'Palasthotel\\WordPress\\LiveNews\\Query' => $baseDir . '/classes/Query.php',
+    'Palasthotel\\WordPress\\LiveNews\\QueryManipulation' => $baseDir . '/classes/QueryManipulation.php',
     'Palasthotel\\WordPress\\LiveNews\\Render' => $baseDir . '/classes/Render.php',
     'Palasthotel\\WordPress\\LiveNews\\WP_REST_Endpoints' => $baseDir . '/classes/WP_REST_Endpoints.php',
 );
