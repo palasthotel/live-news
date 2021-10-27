@@ -4,13 +4,13 @@
  * Plugin Name: Live News
  * Plugin URI: https://github.com/EdwardBock/live-news
  * Description: Custom post type for news stream
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Palasthotel by Stephan <stephan.kroppenstedt@palasthotel.de> & Edward <edward.bock@palasthotel.de>
  * Author URI: https://palasthotel.de
  * Text Domain: live-news
  * Domain Path: /languages
  * Requires at least: 4.0
- * Tested up to: 5.5.3
+ * Tested up to: 5.8.1
  * License: http://www.gnu.org/licenses/gpl-3.0.html GPLv3
  *
  * @copyright Copyright (c) 2019, Palasthotel
