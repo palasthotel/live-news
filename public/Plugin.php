@@ -35,6 +35,7 @@ use Palasthotel\WordPress\LiveNews\Mapper\DataMapper;
  * @property WP_REST_Endpoints wp_rest_endpoint
  * @property DataMapper dataMapper
  * @property QueryManipulation queryManipulation
+ * @property ProLitteris $proLitteris
  */
 class Plugin {
 
@@ -122,6 +123,7 @@ class Plugin {
 		$this->dataMapper       = new DataMapper( $this );
 		$this->wp_rest_endpoint = new WP_REST_Endpoints( $this );
 		$this->customPostType   = new CustomPostType( $this );
+		$this->proLitteris = new ProLitteris($this);
 		$this->render           = new Render( $this );
 		$this->editor           = new Editor( $this );
 		$this->assets           = new Assets( $this );

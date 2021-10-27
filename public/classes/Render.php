@@ -99,7 +99,7 @@ class Render {
 		}
 		$particles = $post->particles;
 
-		if(function_exists('pro_litteris_is_message_the_content') && pro_litteris_is_message_the_content()){
+		if($this->plugin->proLitteris->isMessageTheContent()){
 			include $this->get_template_path(Plugin::TEMPLATE_THE_PARTICLES_PRO_LITTERIS);
 		} else {
 			include $this->get_template_path(Plugin::TEMPLATE_THE_PARTICLES);
