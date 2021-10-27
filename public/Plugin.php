@@ -84,6 +84,8 @@ class Plugin {
 
 	const TEMPLATE_THE_PARTICLES = "the_particles.php";
 
+	const TEMPLATE_THE_PARTICLES_PRO_LITTERIS = "the_particles--pro-litteris.php";
+
 	const TEMPLATE_THE_PARTICLE = "the_particle.php";
 
 	const TEMPLATE_THE_PARTICLE_CONTENT = "the_particle_content.php";

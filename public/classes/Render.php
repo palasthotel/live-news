@@ -68,7 +68,7 @@ class Render {
 			!$this->shouldRenderToTheContent()
 		) return $content;
 
-		// remove it so if we use it in the render particles process it wont be a recursion
+		// remove it so if we use it in the render particles process it won't be a recursion
 		remove_filter('the_content', array($this, 'the_content'), $this->getTheContentFilterPriority());
 		ob_start();
 		$this->renderPost(get_post());
@@ -98,8 +98,12 @@ class Render {
 			return;
 		}
 		$particles = $post->particles;
-		include $this->get_template_path(Plugin::TEMPLATE_THE_PARTICLES);
 
+		if(function_exists('pro_litteris_is_message_the_content') && pro_litteris_is_message_the_content()){
+			include $this->get_template_path(Plugin::TEMPLATE_THE_PARTICLES_PRO_LITTERIS);
+		} else {
+			include $this->get_template_path(Plugin::TEMPLATE_THE_PARTICLES);
+		}
 	}
 
 	/**

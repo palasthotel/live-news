@@ -35,18 +35,19 @@ class Assets {
 	 * register scripts for later use
 	 */
 	public function admin_init() {
+		$info = include $this->plugin->path . "/dist/editor.asset.php";
 		wp_register_script(
 			Plugin::HANDLE_EDITOR_JS,
 			$this->plugin->url . "/dist/editor.js",
-			array('wp-api'),
-			filemtime( $this->plugin->path . "/dist/editor.js" ),
+			array_merge( $info["dependencies"], ["jquery"] ),
+			$info["version"],
 			true
 		);
 		wp_register_style(
 			Plugin::HANDLE_EDITOR_STYLE,
 			$this->plugin->url . "/dist/editor.css",
 			array(),
-			filemtime( $this->plugin->path . "/dist/editor.css" )
+			$info["version"]
 		);
 	}
 
@@ -122,11 +123,12 @@ class Assets {
 	 * @param int $postId
 	 */
 	public function enqueueFrontend( $postId ) {
+		$info = include $this->plugin->path . "/dist/frontend.asset.php";
 		wp_enqueue_script(
 			Plugin::HANDLE_FRONTEND_JS,
 			$this->plugin->url . "/dist/frontend.js",
-			array( "jquery", "wp-embed"),
-			filemtime( $this->plugin->path . "/dist/frontend.js" ),
+			array_merge( $info["dependencies"], ["jquery", "wp-embed"] ),
+			$info["version"],
 			true
 		);
 		wp_localize_script(

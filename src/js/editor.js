@@ -4,6 +4,8 @@ import {ContentType_HTML} from './lib/view/content-type--html';
 import {ContentType_Title} from './lib/view/content-type--title';
 import {ContentType_Upload} from './lib/view/content-type--upload';
 
+import '../scss/editor.scss';
+
 (function(config) {
 
 	window.LiveNews = config;

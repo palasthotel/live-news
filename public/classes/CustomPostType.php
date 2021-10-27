@@ -4,8 +4,6 @@
 namespace Palasthotel\WordPress\LiveNews;
 
 
-use Palasthotel\WordPress\LiveNews\Model\GetParticlesArguments;
-
 /**
  * @property Plugin plugin
  */
