@@ -1,6 +1,6 @@
-import {render as timeagoRender, register as timeagoRegister} from 'timeago.js';
+import {register as timeagoRegister, render as timeagoRender} from 'timeago.js';
 import {publicApi} from './lib/api';
-import {listen, trigger, onAddParticle, triggerAddParticle} from './lib/utils/events';
+import {onAddParticle, triggerAddParticle} from './lib/utils/events';
 
 // the local dict example is below.
 const localeFunc = (number, index, total_sec) => {
@@ -27,16 +27,15 @@ const localeFunc = (number, index, total_sec) => {
 // register your locale with timeago
 timeagoRegister('de_DE', localeFunc);
 
-(function ($, config) {
+(function (config) {
 
     const {selectors} = config;
 
     let {isFetchUpdatesActive} = config;
 
-    const $body = $("body");
-    const $root = $("#" + selectors.rootId);
-    const $list = $("#" + selectors.listId);
-    const $loadMore = $("#" + selectors.loadMoreId);
+    const root = document.getElementById( selectors.rootId);
+    const list = document.getElementById( selectors.listId);
+    const loadMore = document.getElementById(selectors.loadMoreId);
 
     //------------------------------------------------------------------------
     // hooks
@@ -50,7 +49,7 @@ timeagoRegister('de_DE', localeFunc);
     //------------------------------------------------------------------------
     // if important elements are missing in frontend, we cannot help
     //------------------------------------------------------------------------
-    if ($root.length !== 1 || $list.length !== 1) {
+    if (!root || !list) {
         console.error("Missing root and list ids", selectors);
         return;
     }
@@ -60,7 +59,7 @@ timeagoRegister('de_DE', localeFunc);
     //------------------------------------------------------------------------
     const api = publicApi(config);
     let particlePool = [];
-    let numberOfVisibleParticles = $list.children().length;
+    let numberOfVisibleParticles = list.childNodes.length;
 
     //------------------------------------------------------------------------
     // particle pool functions
@@ -98,10 +97,10 @@ timeagoRegister('de_DE', localeFunc);
     };
 
     //------------------------------------------------------------------------
-    // loadmore button
+    // load more button
     //------------------------------------------------------------------------
-    if($loadMore.length){
-        $loadMore.on("click", function(e){
+    if(loadMore){
+        loadMore.addEventListener("click", (e)=>{
             e.preventDefault();
             showMore(hooks.filterShowMoreIncrement(5));
             updateView();
@@ -116,17 +115,17 @@ timeagoRegister('de_DE', localeFunc);
         clearTimeout(fetchParticlesTimeout);
         if(!isFetchUpdatesActive) return;
 
-        $body.addClass("live-news-status__is-fetching-update");
+        document.body.classList.add("live-news-status__is-fetching-update");
 
         api.fetchParticlesUpdate({
             output: "html",
         }).then(function (particles) {
 
-            $body.removeClass("live-news-status__is-fetching-update");
+            document.body.classList.remove("live-news-status__is-fetching-update");
 
-            $body.addClass("live-news-status__fetched-update");
+            document.body.classList.add("live-news-status__fetched-update");
             setTimeout(function () {
-                $body.removeClass("live-news-status__fetched-update");
+                document.body.classList.remove("live-news-status__fetched-update");
             }, 500);
 
             showMore(particles.length);
@@ -147,11 +146,11 @@ timeagoRegister('de_DE', localeFunc);
     //------------------------------------------------------------------------
     // load all particles once
     //------------------------------------------------------------------------
-    $body.addClass("live-news-status__is-fetching");
+    document.body.classList.add("live-news-status__is-fetching");
     api.fetchParticles({
         output: "html",
     }).then((particles)=>{
-        $body.removeClass("live-news-status__is-fetching");
+        document.body.classList.remove("live-news-status__is-fetching");
         merge(particles);
         // start fetching updates
         fetchParticlesUpdate();
@@ -175,65 +174,66 @@ timeagoRegister('de_DE', localeFunc);
             position++;
 
             const {id, html} = p;
-            const $particle = $list.find(`[data-particle-id=${id}]`);
+            const particleNode = list.querySelector(`[data-particle-id="${id}"]`);
 
             if(p.is_deleted){
                 // DELETE
-                $particle.remove();
+                particleNode.remove();
                 position--;
                 continue;
             }
 
-            let $newParticle = $(html);
-            $newParticle.attr("data-update-timestamp", updateTimestamp);
-            $newParticle.attr("data-particle-modified", p.modified);
+            const particleFactory = document.createElement("div");
+            particleFactory.innerHTML = html;
+            let newParticle = particleFactory.firstChild;
+            newParticle.setAttribute("data-update-timestamp", updateTimestamp);
+            newParticle.setAttribute("data-particle-modified", p.modified);
 
             // add or modify content
-            if($particle.length) {
-                if($particle.attr("data-particle-modified") !== $newParticle.attr("data-particle-modified")){
+            if(particleNode) {
+                if(particleNode.getAttribute("data-particle-modified") !== newParticle.getAttribute("data-particle-modified")){
                     // UPDATE
-                    $particle.replaceWith($newParticle);
+                    particleNode.replaceWith(newParticle);
                 } else {
-                    $particle.attr("data-update-timestamp", updateTimestamp);
-                    $newParticle = $particle;
+                    particleNode.setAttribute("data-update-timestamp", updateTimestamp);
+                    newParticle = particleNode;
                 }
             } else {
                 // INSERT
-                $list.append($newParticle);
+                list.append(newParticle);
 
-                triggerAddParticle($newParticle);
+                triggerAddParticle(newParticle);
             }
 
             // sync order
-            const elementPosition = $newParticle.index();
+            const elementPosition = Array.from(newParticle.parentNode.childNodes).indexOf(newParticle);
             if(elementPosition !== position) {
                 if(position === 0){
-                    $list.prepend($newParticle);
+                    list.prepend(newParticle);
                 } else {
-                    $newParticle.insertAfter($list.children().get(position-1));
+                    list.insertBefore(newParticle, list.children[position]);
                 }
 
             }
 
             // start timeago
-            timeagoize($newParticle.find(".timeago"));
+            timeagoize(newParticle.querySelector(".timeago"));
         }
 
         let visibleCount = 0;
-        $list.children().each((index, el)=>{
-            const $el = $(el);
-            if($el.attr("data-update-timestamp") !== updateTimestamp+""){
-                $el.hide();
+        for (const child of list.children) {
+            if(child.getAttribute("data-update-timestamp") !== updateTimestamp+""){
+                child.style.display = "none";
             } else {
-                $el.show();
+                child.style.display = "inherit";
                 visibleCount++;
             }
-        });
+        }
 
         if( hooks.filterHideShowMoreButton(visibleCount >= particlePool.length) ){
-            $body.addClass("live-news-status__all-visible");
+            document.body.classList.add("live-news-status__all-visible");
         } else {
-            $body.removeClass("live-news-status__all-visible");
+            document.body.classList.remove("live-news-status__all-visible");
         }
 
         return true;
@@ -243,12 +243,12 @@ timeagoRegister('de_DE', localeFunc);
     //------------------------------------------------------------------------
     // update view with particle modifications
     //------------------------------------------------------------------------
-    function timeagoize($dates) {
-        timeagoRender($dates.get(), 'de_DE');
+    function timeagoize(node) {
+        timeagoRender(node, 'de_DE');
     }
 
     // initial timeago for php rendered elements
-    timeagoize($('.timeago'));
+    document.querySelectorAll(".timeago").forEach(timeagoize);
 
     //------------------------------------------------------------------------
     // public object
@@ -276,4 +276,4 @@ timeagoRegister('de_DE', localeFunc);
     };
 
 
-})(jQuery, LiveNews);
+})(LiveNews);
