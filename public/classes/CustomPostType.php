@@ -162,6 +162,7 @@ class CustomPostType {
 				'thumbnail',
 				'comments',
 				'revisions',
+				'custom-fields',
 			),
 			'taxonomies'          => array( 'category', 'post_tag' ),
 			'hierarchical'        => false,
