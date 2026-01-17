@@ -8,11 +8,9 @@ use Palasthotel\WordPress\LiveNews\Model\GetParticlesArguments;
 use Palasthotel\WordPress\LiveNews\Model\Particle;
 use Palasthotel\WordPress\LiveNews\Model\ParticleContent;
 
-/**
- * @property Plugin plugin
- */
 class WP_REST_Endpoints {
 
+    public Plugin $plugin;
 
 	/**
 	 * routes

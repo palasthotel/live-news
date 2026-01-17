@@ -4,10 +4,9 @@
 namespace Palasthotel\WordPress\LiveNews;
 
 
-/**
- * @property Plugin plugin
- */
 class Assets {
+
+    public Plugin $plugin;
 
 	/**
 	 * Assets constructor.

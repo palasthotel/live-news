@@ -5,15 +5,14 @@ namespace Palasthotel\WordPress\LiveNews;
 /**
  * Class QueryManipulation
  *
- * @property Plugin plugin
  * @package AdditionalAuthors
  */
 class QueryManipulation {
 
+    public Plugin $plugin;
+
 	/**
 	 * Query constructor.
-	 *
-	 * @param Plugin $plugin
 	 */
 	function __construct( Plugin $plugin ) {
 

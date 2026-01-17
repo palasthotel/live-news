@@ -3,21 +3,21 @@
 
 namespace Palasthotel\WordPress\LiveNews;
 
-
+use DateTimeZone;
 use Palasthotel\WordPress\LiveNews\Model\GetParticlesArguments;
 use Palasthotel\WordPress\LiveNews\Model\Particle;
 use Palasthotel\WordPress\LiveNews\Model\ParticleContent;
 use Palasthotel\WordPress\LiveNews\Model\QueryResult;
 
-/**
- * @property \wpdb wpdb
- * @property string tableParticles
- * @property string tableContents
- * @property string tableParticlesToTags
- * @property string tableTags
- * @property \DateTimeZone timezone
- */
 class Database {
+
+    /* @var wpdb */
+    public $wpdb;
+    public string $tableParticles;
+    public string $tableContents;
+    public string $tableParticlesToTags;
+    public string $tableTags;
+    public DateTimeZone $timezone;
 
 	/**
 	 * Database constructor.
@@ -29,7 +29,7 @@ class Database {
 		$this->tableContents        = $this->wpdb->prefix . "particle_contents";
 		$this->tableParticlesToTags = $this->wpdb->prefix . "particles_to_tags";
 		$this->tableTags            = $this->wpdb->prefix . "particle_tags";
-		$this->timezone             = new \DateTimeZone( get_option( "timezone_string", "utc" ) );
+		$this->timezone             = new DateTimeZone( get_option( "timezone_string", "utc" ) );
 	}
 
 	/**

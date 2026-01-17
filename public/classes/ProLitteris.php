@@ -2,10 +2,9 @@
 
 namespace Palasthotel\WordPress\LiveNews;
 
-/**
- * @property Plugin $plugin
- */
 class ProLitteris {
+
+    public Plugin $plugin;
 
 	public function __construct( Plugin $plugin) {
 		$this->plugin = $plugin;

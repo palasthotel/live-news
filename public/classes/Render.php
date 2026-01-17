@@ -4,10 +4,9 @@
 namespace Palasthotel\WordPress\LiveNews;
 
 
-/**
- * @property Plugin plugin
- */
 class Render {
+
+    public Plugin $plugin;
 
 	/**
 	 * @var array

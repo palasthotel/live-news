@@ -4,10 +4,9 @@
 namespace Palasthotel\WordPress\LiveNews;
 
 
-/**
- * @property Plugin plugin
- */
 class Editor {
+
+    public Plugin $plugin;
 
 	const DOM_PARTICLE_EDITOR_ROOT_ID = "live-news-root";
 

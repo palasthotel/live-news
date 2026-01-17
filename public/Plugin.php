@@ -23,21 +23,20 @@ namespace Palasthotel\WordPress\LiveNews;
 
 use Palasthotel\WordPress\LiveNews\Mapper\DataMapper;
 
-/**
- * @property string path
- * @property string url
- * @property CustomPostType $customPostType
- * @property Editor editor
- * @property Assets assets
- * @property Database database
- * @property Render render
- * @property string namespace
- * @property WP_REST_Endpoints wp_rest_endpoint
- * @property DataMapper dataMapper
- * @property QueryManipulation queryManipulation
- * @property ProLitteris $proLitteris
- */
 class Plugin {
+
+    public string $path;
+    public string $url;
+    public CustomPostType $customPostType;
+    public Editor $editor;
+    public Assets $assets;
+    public Database $database;
+    public Render $render;
+    public string $namespace;
+    public WP_REST_Endpoints $wp_rest_endpoint;
+    public DataMapper $dataMapper;
+    public QueryManipulation $queryManipulation;
+    public ProLitteris $proLitteris;
 
 	const DOMAIN = "live-news";
 

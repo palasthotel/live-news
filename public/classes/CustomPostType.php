@@ -4,15 +4,12 @@
 namespace Palasthotel\WordPress\LiveNews;
 
 
-/**
- * @property Plugin plugin
- */
 class CustomPostType {
+
+    public Plugin $plugin;
 
 	/**
 	 * CustomPostType constructor.
-	 *
-	 * @param Plugin $plugin
 	 */
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;

@@ -8,15 +8,12 @@ use Palasthotel\WordPress\LiveNews\Model\Particle;
 use Palasthotel\WordPress\LiveNews\Model\ParticleContent;
 use WP_Query;
 
-/**
- * @property Plugin plugin
- */
 class DataMapper {
+
+    public Plugin $plugin;
 
 	/**
 	 * DataMapper constructor.
-	 *
-	 * @param Plugin $plugin
 	 */
 	public function __construct($plugin) {
 		$this->plugin = $plugin;
