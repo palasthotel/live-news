@@ -1,0 +1,6 @@
+[17-Jan-2026 09:48:17 UTC] PHP Deprecated:  strpos(): Passing null to parameter #1 ($haystack) of type string is deprecated in /var/www/html/wp-includes/functions.php on line 7374
+[17-Jan-2026 09:48:17 UTC] PHP Deprecated:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in /var/www/html/wp-includes/functions.php on line 2196
+[17-Jan-2026 09:48:17 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /var/www/html/wp-includes/functions.php:7374) in /var/www/html/wp-includes/functions.php on line 7182
+[17-Jan-2026 09:48:17 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /var/www/html/wp-includes/functions.php:7374) in /var/www/html/wp-admin/admin-header.php on line 14
+[17-Jan-2026 09:48:17 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /var/www/html/wp-includes/functions.php:7374) in /var/www/html/wp-includes/option.php on line 1740
+[17-Jan-2026 09:48:17 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /var/www/html/wp-includes/functions.php:7374) in /var/www/html/wp-includes/option.php on line 1741
